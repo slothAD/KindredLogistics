@@ -1,4 +1,5 @@
 using ProjectM;
+using ProjectM.CastleBuilding;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.Shared;
@@ -241,8 +242,6 @@ namespace KindredLogistics.Services
                 return;
             }
 
-           
-
             // Determine the multiple of the recipe we currently have then we will try to fetch up to one more recipe's worth of materials
             var recipeName = recipeEntity.Read<PrefabGUID>().LookupName();
 
@@ -263,7 +262,7 @@ namespace KindredLogistics.Services
                 int repairAmount = (int)Math.Ceiling(requirement.Stacks * (1 - repairNeeded));
                 RetrieveRequirement(character, Entity.Null, user, entityManager, ref serverGameManager, recipeName, dontPullLast, silentPull, inventory,
                     Entity.Null, ref fetchedForAnother, ref fetchedMaterials, requirement.Guid, repairAmount, desiredRecipeMultiple,
-                    1, "repairing");
+                    1, "repairing", excludeTreasuryRoom: true);
             }
         }
         public static void HandleForgePull(Entity character, Entity workstation, Entity item)
@@ -394,7 +393,7 @@ namespace KindredLogistics.Services
         static void RetrieveRequirement(Entity character, Entity workstation, User user, EntityManager entityManager, ref ServerGameManager serverGameManager,
                                         string recipeName, bool dontPullLast, bool silentPull, Entity inventory, Entity workstationInventory, ref bool fetchedForAnother,
                                         ref bool fetchedMaterials, PrefabGUID requiredItem, int requiredAmount, int desiredRecipeMultiple, double recipeReduction,
-                                        string fetchMessage = "")
+                                        string fetchMessage = "", bool excludeTreasuryRoom = false)
         {
             var currentAmount = serverGameManager.GetInventoryItemCount(inventory, requiredItem);
             if (!workstationInventory.Equals(Entity.Null))
@@ -467,6 +466,15 @@ namespace KindredLogistics.Services
                     }
                 }
 
+
+                var isTreasuryRoom = false;
+                if (excludeTreasuryRoom)
+                {
+                    var room = stash.Read<CastleRoomConnection>().RoomEntity.GetEntityOnServer();
+                    if (room != Entity.Null && Utilities.IsRoomOfType(room, CastleFloorTypes.Treasury))
+                        isTreasuryRoom = true;
+                }
+
                 foreach (var attachedBuffer in buffer)
                 {
                     var attachedEntity = attachedBuffer.Entity;
@@ -481,23 +489,33 @@ namespace KindredLogistics.Services
                     if (stashItemCount <= 0) continue;
 
                     var transferAmount = Mathf.Min(stashItemCount, requiredAmount);
-                    if (isAnItemEntity)
+
+                    if (!excludeTreasuryRoom || !isTreasuryRoom)
                     {
-                        if (Utilities.TransferItemEntities(attachedEntity, inventory, requiredItem, transferAmount, ref destinationSlot, out transferAmount))
+                        if (isAnItemEntity)
                         {
-                            isInventoryFull = true;
-                            break;
+                            if (Utilities.TransferItemEntities(attachedEntity, inventory, requiredItem, transferAmount, ref destinationSlot, out transferAmount))
+                            {
+                                isInventoryFull = true;
+                                break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        transferAmount = Utilities.TransferItems(serverGameManager, attachedEntity, inventory, requiredItem, transferAmount);
+                        else
+                        {
+                            transferAmount = Utilities.TransferItems(serverGameManager, attachedEntity, inventory, requiredItem, transferAmount);
+                        }
                     }
                     if (transferAmount <= 0)
                         continue;
-                    
+
                     if (!silentPull)
-                        Utilities.SendSystemMessageToClient(entityManager, user, $"<color=white>{transferAmount}</color>x <color=green>{requiredItem.PrefabName()}</color> fetched from <color=#FFC0CB>{stash.EntityName()}</color>");
+                    {
+                        if (excludeTreasuryRoom && isTreasuryRoom)
+                            Utilities.SendSystemMessageToClient(entityManager, user, $"<color=white>{transferAmount}</color>x <color=green>{requiredItem.PrefabName()}</color> used from <color=#FFC0CB>{stash.EntityName()}</color> in the Treasury Room");
+                        else
+                            Utilities.SendSystemMessageToClient(entityManager, user, $"<color=white>{transferAmount}</color>x <color=green>{requiredItem.PrefabName()}</color> fetched from <color=#FFC0CB>{stash.EntityName()}</color>");
+
+                    }
                     requiredAmount -= transferAmount;
                     if (requiredAmount <= 0)
                         break;

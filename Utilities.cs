@@ -8,7 +8,6 @@ using Stunlock.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -259,5 +258,38 @@ namespace KindredLogistics
             var msg = new FixedString512Bytes(message);
             ServerChatUtils.SendSystemMessageToClient(entityManager, user, ref msg);
         }
+
+        public static bool IsRoomOfType(Entity roomEntity, CastleFloorTypes floorType)
+        {
+            // Check if this is a valid room
+            if (!roomEntity.Has<CastleRoom>())
+                return false;
+
+            var castleRoom = roomEntity.Read<CastleRoom>();
+            if (!castleRoom.IsEnclosedRoom)
+                return false;
+
+            // Check if all floors in the room are of the specified type
+            if (!roomEntity.Has<CastleRoomFloorsBuffer>())
+                return false;
+
+            var roomFloorsBuffer = Core.EntityManager.GetBuffer<CastleRoomFloorsBuffer>(roomEntity);
+            foreach (var floorRef in roomFloorsBuffer)
+            {
+                var floorEntity = floorRef.FloorEntity.GetEntityOnServer();
+                if (floorEntity.Equals(Entity.Null))
+                    continue;
+
+                if (!floorEntity.Has<CastleFloor>())
+                    return false;
+
+                var castleFloor = floorEntity.Read<CastleFloor>();
+                if (castleFloor.FloorType != floorType || castleFloor.FloorType == CastleFloorTypes.UniversalFloor)
+                    return false;
+            }
+
+            return true;
+        }
+
     }
 }
