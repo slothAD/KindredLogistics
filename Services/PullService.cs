@@ -1,3 +1,4 @@
+using BepInEx.Core.Logging.Interpolation;
 using ProjectM;
 using ProjectM.CastleBuilding;
 using ProjectM.Network;
@@ -468,7 +469,7 @@ namespace KindredLogistics.Services
 
 
                 var isTreasuryRoom = false;
-                if (excludeTreasuryRoom)
+                if (excludeTreasuryRoom && stash.Has<CastleRoomConnection>())
                 {
                     var room = stash.Read<CastleRoomConnection>().RoomEntity.GetEntityOnServer();
                     if (room != Entity.Null && Utilities.IsRoomOfType(room, CastleFloorTypes.Treasury))
