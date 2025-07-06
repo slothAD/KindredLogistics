@@ -84,6 +84,7 @@ internal static class Core
 
         Core.Log.LogInfo("KindredLogistics  已初始化");
 
+
         hasInitialized = true;
     }
 
