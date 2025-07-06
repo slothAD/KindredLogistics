@@ -143,7 +143,7 @@ class FoundItemConverter : CommandArgumentConverter<FoundItem>
                 var prefabName = prefab.PrefabName();
                 /*if(itemNamesToPrefabs.TryGetValue(prefabName, out var otherPrefab))
                 {
-                    Core.Log.LogWarning($"Duplicate item name found: {prefabName} {prefab} {otherPrefab}");
+                    Core.Log.LogWarning($"發現重複的物品名稱：{prefabName} {prefab} {otherPrefab}");
                 }//*/
                 itemNamesToPrefabs[prefabName] = prefab;
             }

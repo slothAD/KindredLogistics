@@ -104,7 +104,7 @@ namespace KindredLogistics
 
                     if (amountToTransfer > 0 && !overflowStash.stash.Equals(Entity.Null)) // send remaining to spoils
                     {
-                        //Core.Log.LogInfo($"Transferred {amountTransferred} to matching stash with {remaining} left for spoils...");
+                        //Core.Log.LogInfo($"已轉移 {amountTransferred} 至匹配儲藏箱，剩餘 {remaining} 將進入戰利品...");
                         var remainingAmountTransferred = TransferItems(serverGameManager, inventory, overflowStash.inventory, item, amountToTransfer);
                         //Core.Log.LogInfo($"Transferred {remainingAmountTransferred} to spoils. Remaining in inventory: {serverGameManager.GetInventoryItemCount(inventory, item)}");
                     }
@@ -229,11 +229,11 @@ namespace KindredLogistics
                     var restoreResponse = serverGameManager.TryAddInventoryItem(outputInventory, itemGuid, response.RemainingAmount);
                     if (restoreResponse.Result == AddItemResult.Success_Complete)
                     {
-                        //Core.Log.LogInfo($"Restored items to original inventory.");
+                        //Core.Log.LogInfo($"已將物品還原至原本的物品欄。");
                     }
                     else
                     {
-                        //Core.Log.LogInfo($"Unable to return items to original inventory.");
+                        //Core.Log.LogInfo($"無法將物品歸還至原始物品欄。");
                     }
                     return transferAmount - response.RemainingAmount;
                 }

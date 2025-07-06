@@ -15,7 +15,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var autoStash = Core.PlayerSettings.ToggleSortStash(SteamID);
-            ctx.Reply($"自動儲藏功能為 {(autoStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"SortStash is {(autoStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
        
         [Command(name: "craftpull", shortHand: "cr", usage: ".l cr", description: "Toggles right-clicking on recipes for missing ingredients.")]
@@ -24,7 +24,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var autoPull = Core.PlayerSettings.ToggleCraftPull(SteamID);
-            ctx.Reply($"合成材料自動拉取為 {(autoPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"CraftPull is {(autoPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "dontpulllast", shortHand: "dpl", usage: ".l dpl", description: "Toggles the ability to not pull the last item from a container for Logistics commands.")]
@@ -33,7 +33,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var dontPullLast = Core.PlayerSettings.ToggleDontPullLast(SteamID);
-            ctx.Reply($"保留最後一個物品為 {(dontPullLast ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"DontPullLast is {(dontPullLast ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "autostashmissions", shortHand: "asm", usage: ".l asm", description: "Toggles autostashing for servant missions.")]
@@ -42,7 +42,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var autoStashMissions = Core.PlayerSettings.ToggleAutoStashMissions(SteamID);
-            ctx.Reply($"隨從任務自動儲藏為 {(autoStashMissions ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"AutoStash for missions is {(autoStashMissions ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "conveyor", shortHand: "co", usage: ".l co", description: "Toggles the ability of sender/receiver's to move items around.")]
@@ -51,7 +51,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var conveyor = Core.PlayerSettings.ToggleConveyor(SteamID);
-            ctx.Reply($"物品輸送帶功能為 {(conveyor ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Conveyor is {(conveyor ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "salvage", shortHand: "sal", usage: ".l sal", description: "Toggles the ability to salvage items from a chest named 'salvage'.")]
@@ -60,7 +60,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var salvage = Core.PlayerSettings.ToggleSalvage(SteamID);
-            ctx.Reply($"自動分解功能為 {(salvage ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Salvage is {(salvage ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "unitspawner", shortHand: "us", usage: ".l sp", description: "Toggles the ability to fill unit stations from a chest named 'spawner'.")]
@@ -69,7 +69,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var spawner = Core.PlayerSettings.ToggleUnitSpawner(SteamID);
-            ctx.Reply($"單位產生器填充功能為 {(spawner ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Spawner is {(spawner ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "brazier", shortHand: "bz", usage: ".l bz", description: "Toggles the ability to fill braziers from a chest named 'brazier'.")]
@@ -78,7 +78,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var brazier = Core.PlayerSettings.ToggleBrazier(SteamID);
-            ctx.Reply($"火盆自動補充功能為 {(brazier ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Brazier is {(brazier ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "silentpull", shortHand: "sp", description: "Toggles the ability to not send messages when pulling about where they came from.")]
@@ -87,7 +87,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var silentCraftPull = Core.PlayerSettings.ToggleSilentPull(SteamID);
-            ctx.Reply($"靜默拉取為 {(silentCraftPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"SilentPull is {(silentCraftPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "silentstash", shortHand: "ssh", description: "Toggles the ability to not send messages when stashing items about where they go.")]
@@ -96,7 +96,7 @@ namespace Logistics.Commands
             var SteamID = ctx.Event.User.PlatformId;
 
             var silentStash = Core.PlayerSettings.ToggleSilentStash(SteamID);
-            ctx.Reply($"靜默儲藏為 {(silentStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"SilentStash is {(silentStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "settings", shortHand: "s", usage: ".l s", description: "Displays current settings.")]
@@ -106,7 +106,7 @@ namespace Logistics.Commands
 
             var settings = Core.PlayerSettings.GetSettings(SteamID);
             var globalSettings = Core.PlayerSettings.GetGlobalSettings();
-            ctx.Reply("KindredLogistics 設定：\n" +
+            ctx.Reply("KindredLogistics Settings:\n" +
                       $"SortStash: {(globalSettings.SortStash ? (settings.SortStash ? "<color=green>On</color>" : "<color=red>Off</color>") : ("<color=red>Server Off</color>"))}\n" +
                       $"Pull (Global) : {(globalSettings.Pull ? "<color=green>Server On</color>" : "<color=red>Server Off</color>")}\n" +
                       $"CraftPull: {(globalSettings.CraftPull ? (settings.CraftPull ? "<color=green>On</color>" : "<color=red>Off</color>") : "<color=red>Server Off</color>")}\n" +
@@ -130,70 +130,70 @@ namespace Logistics.Commands
         public static void TogglePlayerAutoStash(ChatCommandContext ctx)
         {
             var autoStash = Core.PlayerSettings.ToggleSortStash();
-            ctx.Reply($"Global 自動儲藏功能為 {(autoStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global SortStash is {(autoStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "pull", shortHand: "p", usage: ".lg p", description: "Toggles the ability to pull items from containers.", adminOnly: true)]
         public static void TogglePlayerPull(ChatCommandContext ctx)
         {
             var pull = Core.PlayerSettings.TogglePull();
-            ctx.Reply($"全域物品拉取功能為 {(pull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Pull is {(pull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "craftpull", shortHand: "cr", usage: ".lg cr", description: "Toggles right-clicking on recipes for missing ingredients.", adminOnly: true)]
         public static void TogglePlayerAutoPull(ChatCommandContext ctx)
         {
             var autoPull = Core.PlayerSettings.ToggleCraftPull();
-            ctx.Reply($"合成材料自動拉取為 {(autoPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"CraftPull is {(autoPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "autostashmissions", shortHand: "asm", usage: ".lg asm", description: "Toggles autostashing for servant missions.", adminOnly: true)]
         public static void ToggleServantAutoStash(ChatCommandContext ctx)
         {
             var autoStashMissions = Core.PlayerSettings.ToggleAutoStashMissions();
-            ctx.Reply($"Global 隨從任務自動儲藏為 {(autoStashMissions ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global AutoStash for missions is {(autoStashMissions ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "conveyor", shortHand: "co", usage: ".lg co", description: "Toggles the ability of sender/receiver's to move items around.", adminOnly: true)]
         public static void ToggleConveyor(ChatCommandContext ctx)
         {
             var conveyor = Core.PlayerSettings.ToggleConveyor();
-            ctx.Reply($"Global 物品輸送帶功能為 {(conveyor ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Conveyor is {(conveyor ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "salvage", shortHand: "sal", usage: ".lg sal", description: "Toggles the ability to salvage items from a chest named 'salvage'.", adminOnly: true)]
         public static void ToggleSalvage(ChatCommandContext ctx)
         {
             var salvage = Core.PlayerSettings.ToggleSalvage();
-            ctx.Reply($"Global 自動分解功能為 {(salvage ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Salvage is {(salvage ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "unitspawner", shortHand: "us", usage: ".lg sp", description: "Toggles the ability to fill unit stations from a chest named 'spawner'.", adminOnly: true)]
         public static void ToggleUnitSpawner(ChatCommandContext ctx)
         {
             var spawner = Core.PlayerSettings.ToggleUnitSpawner();
-            ctx.Reply($"Global 單位產生器填充功能為 {(spawner ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Spawner is {(spawner ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "brazier", shortHand: "bz", usage: ".lg bz", description: "Toggles the ability to fill braziers from a chest named 'brazier'.", adminOnly: true)]
         public static void ToggleBrazier(ChatCommandContext ctx)
         {
             var brazier = Core.PlayerSettings.ToggleBrazier();
-            ctx.Reply($"Global 火盆自動補充功能為 {(brazier ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Brazier is {(brazier ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "named", shortHand:"nam", usage: ".lg nam", description: "Toggles the ability allow night/proximity controlled braziers.", adminOnly: true)]
         public static void ToggleSolar(ChatCommandContext ctx)
         {
             var solar = Core.PlayerSettings.ToggleSolar();
-            ctx.Reply($"全域日夜/接近火盆控制功能為 {(solar ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
+            ctx.Reply($"Global Named is {(solar ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}.");
         }
 
         [Command(name: "settings", shortHand: "s", usage: ".lg s", description: "Displays current settings.", adminOnly: true)]
         public static void DisplaySettings(ChatCommandContext ctx)
         {
             var settings = Core.PlayerSettings.GetGlobalSettings();
-            ctx.Reply("KindredLogistics 全域設定：\n" +
+            ctx.Reply("KindredLogistics Global settings:\n" +
                       $"SortStash: {(settings.SortStash ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}\n" +
                       $"Pull: {(settings.Pull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}\n" +
                       $"CraftPull: {(settings.CraftPull ? "<color=green>enabled</color>" : "<color=red>disabled</color>")}\n" +

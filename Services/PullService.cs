@@ -18,13 +18,13 @@ namespace KindredLogistics.Services
             var user = character.Read<PlayerCharacter>().UserEntity.Read<User>();
             if (Core.PlayerSettings.IsPullEnabled())
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Pulling is globally disabled.");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "物品拉取功能已全域停用。");
                 return;
             }
 
             if(!Core.GameDataSystem.ItemHashLookupMap.TryGetValue(item, out var itemData))
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Invalid item specified.");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "指定的物品無效。");
                 return;
             }
 
@@ -34,18 +34,18 @@ namespace KindredLogistics.Services
            
             if (territoryIndex == -1)
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to pull outside territories!");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法在領地外拉取物品！");
                 return;
             }
             if (!InventoryUtilities.TryGetInventoryEntity(entityManager, character, out Entity inventory))
             {
-                Core.Log.LogWarning($"No inventory found for character {character}.");
+                Core.Log.LogWarning($"找不到角色 {character} 的物品欄。");
                 return;
             }
             var batform = new PrefabGUID(1205505492);
             if (BuffUtility.TryGetBuff(Core.EntityManager, character, batform , out var _))
             {
-                Utilities.SendSystemMessageToClient(entityManager, user, "Cannot pull items while in batform.");
+                Utilities.SendSystemMessageToClient(entityManager, user, "蝙蝠形態中無法拉取物品。");
                 return;
             }
 
@@ -107,14 +107,14 @@ namespace KindredLogistics.Services
             }
 
             if (!foundStash)
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to pull as no available stashes found in your current territory!");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法拉取，當前領地內找不到可用儲藏箱！");
             else if (quantityRemaining <= 0)
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Pulled {quantity}x {item.PrefabName()} from containers.");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"已從容器中拉取 {quantity} 個 {item.PrefabName()}。");
             else
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Was able to only pull {quantity - quantityRemaining}x out of desired {quantity}x {item.PrefabName()} from containers.");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"僅成功拉取 {quantity - quantityRemaining}/{quantity} 個 {item.PrefabName()}。");
 
             if (inventoryFull)
-                Utilities.SendSystemMessageToClient(entityManager, user, "Inventory is full, unable to pull more items.");
+                Utilities.SendSystemMessageToClient(entityManager, user, "背包已滿，無法拉取更多物品。");
 
         }
 
@@ -124,7 +124,7 @@ namespace KindredLogistics.Services
             var entityManager = Core.EntityManager;
             if (!InventoryUtilities.TryGetInventoryEntity(entityManager, character, out Entity inventory))
             {
-                Core.Log.LogWarning($"No inventory found for character {character}.");
+                Core.Log.LogWarning($"找不到角色 {character} 的物品欄。");
                 return;
             }
 
@@ -184,9 +184,9 @@ namespace KindredLogistics.Services
             }
             if (!fetchedMaterials)
             {
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Couldn't find any materials for crafting additional <color=yellow>{recipeName}</color>!");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"找不到足夠材料製作額外的 <color=yellow>{recipeName}</color>！");
             }
-            Utilities.SendSystemMessageToClient(entityManager, user, $"Have enough materials for crafting <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color>x <color=yellow>{recipeName}</color>.");
+            Utilities.SendSystemMessageToClient(entityManager, user, $"擁有足夠材料，可製作 <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color> 個 <color=yellow>{recipeName}</color>。");
         }
 
         public static void HandleRepairPull(Entity character, PrefabGUID recipe, float repairNeeded, PrefabGUID repairing)
@@ -205,13 +205,15 @@ namespace KindredLogistics.Services
             var recipeEntity = Core.PrefabCollectionSystem._PrefabGuidToEntityMap[recipe];
             if (!recipeEntity.Has<ItemRepairBuffer>())
             {
-                Utilities.SendSystemMessageToClient(entityManager, user, $"{repairing.PrefabName()} has an invalid repair recipe.");
+
+                Utilities.SendSystemMessageToClient(entityManager, user, $"{repairing.PrefabName()} 的配方無效。");
+
                 return;
             }
 
             if (!InventoryUtilities.TryGetInventoryEntity(entityManager, character, out Entity inventory))
             {
-                Core.Log.LogWarning($"No inventory found for character {character}.");
+                Core.Log.LogWarning($"找不到角色 {character} 的物品欄。");
                 return;
             }
 
@@ -231,7 +233,7 @@ namespace KindredLogistics.Services
 
             if (Core.PlayerSettings.IsPullEnabled())
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Pulling is globally disabled.");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "物品拉取功能已全域停用。");
                 return;
             }
 
@@ -239,7 +241,7 @@ namespace KindredLogistics.Services
 
             if (territoryIndex == -1)
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to pull outside territories!");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法在領地外拉取物品！");
                 return;
             }
 
@@ -272,7 +274,7 @@ namespace KindredLogistics.Services
             var entityManager = Core.EntityManager;
             if (!InventoryUtilities.TryGetInventoryEntity(entityManager, character, out Entity inventory))
             {
-                Core.Log.LogWarning($"No inventory found for character {character}.");
+                Core.Log.LogWarning($"找不到角色 {character} 的物品欄。");
                 return;
             }
 
@@ -324,9 +326,9 @@ namespace KindredLogistics.Services
             }
             if (!fetchedMaterials)
             {
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Couldn't find any materials for forging additional <color=yellow>{recipeName}</color>!");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"找不到足夠材料鍛造額外的 <color=yellow>{recipeName}</color>！");
             }
-            Utilities.SendSystemMessageToClient(entityManager, user, $"Have enough materials for forging <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color>x <color=yellow>{recipeName}</color>.");
+            Utilities.SendSystemMessageToClient(entityManager, user, $"擁有足夠材料，可鍛造 <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color> 件 <color=yellow>{recipeName}</color>。");
         }
 
         public static void HandleForgeUpgradePull(Entity character, Entity workstation, Entity item)
@@ -335,7 +337,7 @@ namespace KindredLogistics.Services
             var entityManager = Core.EntityManager;
             if (!InventoryUtilities.TryGetInventoryEntity(entityManager, character, out Entity inventory))
             {
-                Core.Log.LogWarning($"No inventory found for character {character}.");
+                Core.Log.LogWarning($"找不到角色 {character} 的物品欄。");
                 return;
             }
 
@@ -373,9 +375,9 @@ namespace KindredLogistics.Services
 
             if (!fetchedMaterials)
             {
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Couldn't find any materials for upgrading additional <color=yellow>{recipeName}</color>!");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"找不到足夠材料升級額外的 <color=yellow>{recipeName}</color>！");
             }
-            Utilities.SendSystemMessageToClient(entityManager, user, $"Have enough materials for upgrading <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color>x <color=yellow>{recipeName}</color>.");
+            Utilities.SendSystemMessageToClient(entityManager, user, $"擁有足夠材料，可升級 <color=white>{(fetchedForAnother ? desiredRecipeMultiple : currentRecipeMultiple)}</color> 次 <color=yellow>{recipeName}</color>。");
         }
 
 
@@ -406,7 +408,7 @@ namespace KindredLogistics.Services
             {
                 fetchedMaterials = true;
                 if (!silentPull)
-                    Utilities.SendSystemMessageToClient(entityManager, user, $"Fetching materials for {fetchMessage} <color=yellow>{recipeName}</color>...");
+                    Utilities.SendSystemMessageToClient(entityManager, user, $"正在提取 {fetchMessage} <color=yellow>{recipeName}</color> 所需材料...");
             }
 
             requiredAmount -= currentAmount;
@@ -526,7 +528,7 @@ namespace KindredLogistics.Services
             if (requiredAmount > 0)
             {
                 fetchedForAnother = false;
-                Utilities.SendSystemMessageToClient(entityManager, user, $"Couldn't find <color=white>{requiredAmount}</color>x <color=green>{requiredItem.PrefabName()}</color>");
+                Utilities.SendSystemMessageToClient(entityManager, user, $"找不到 <color=white>{requiredAmount}</color> 個 <color=green>{requiredItem.PrefabName()}</color>");
             }
         }
     }

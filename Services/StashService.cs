@@ -170,21 +170,21 @@ namespace KindredLogistics.Services
                 var downed = new PrefabGUID(-1992158531);
                 if (BuffUtility.TryGetBuff(Core.EntityManager, charEntity, downed, out var buff))
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to stash while downed!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "倒地狀態下無法儲藏物品！");
                     return;
                 }
 
                 var health = charEntity.Read<Health>();
                 if (health.Value <= 0 || health.IsDead)
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to stash when dead!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "死亡狀態下無法儲藏物品！");
                     return;
                 }
 
                 var territoryIndex = Core.TerritoryService.GetTerritoryId(charEntity);
                 if (territoryIndex == -1)
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to stash outside territories!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法在領地外進行儲藏！");
                     return;
                 }
 
@@ -194,7 +194,7 @@ namespace KindredLogistics.Services
                     var castleHeart = castleHeartEntity.Read<CastleHeart>();
                     if (castleHeart.ActiveEvent >= CastleHeartEvent.Attacked)
                     {
-                        Utilities.SendSystemMessageToClient(Core.EntityManager, user, $"Unable to stash while castle is {castleHeart.ActiveEvent.ToString()}");
+                        Utilities.SendSystemMessageToClient(Core.EntityManager, user, $"當前城堡狀態為 {castleHeart.ActiveEvent.ToString()}，無法進行儲藏。");
                         return;
                     }
                 }
@@ -248,7 +248,7 @@ namespace KindredLogistics.Services
 
                 if (!foundStash)
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to stash as no available stashes found in your current territory!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法儲藏，當前領地內沒有可用儲藏箱！");
                     return;
                 }
 
@@ -364,27 +364,27 @@ namespace KindredLogistics.Services
 
                 if (amountStashed.Count > 0)
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Stashed items from your inventory to the current territory!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "已將背包物品儲藏至當前領地！");
                 }
                 else
                 {
-                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "No items were able to stash from your inventory!");
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user, "沒有任何物品從背包成功儲藏！");
                 }
 
                 if (!Core.PlayerSettings.IsSilentStashEnabled(user.PlatformId))
                 {
                     foreach (var ((stash, item), amount) in amountStashed)
-                    {
-                        Utilities.SendSystemMessageToClient(Core.EntityManager, user,
-                                               $"Stashed <color=white>{amount}</color>x <color=green>{item.PrefabName()}</color> to <color=#FFC0CB>{stash.EntityName()}</color>");
-                    }
+                {
+                    Utilities.SendSystemMessageToClient(Core.EntityManager, user,
+                        $"已儲存 <color=white>{amount}</color>x <color=green>{item.PrefabName()}</color> 至 <color=#FFC0CB>{stash.EntityName()}</color>");
+                }
 
                     foreach (var stashedItemType in transferredItems)
-                    {
-                        if (amountUnstashed.TryGetValue(stashedItemType, out var amount))
-                            Utilities.SendSystemMessageToClient(Core.EntityManager, user,
-                                                               $"Unable to stash <color=white>{amount}</color>x <color=green>{stashedItemType.PrefabName()}</color> due to insufficient space in stashes!");
-                    }
+                {
+                    if (amountUnstashed.TryGetValue(stashedItemType, out var amount))
+                        Utilities.SendSystemMessageToClient(Core.EntityManager, user,
+                            $"無法儲存 <color=white>{amount}</color>x <color=green>{stashedItemType.PrefabName()}</color>（儲藏空間不足）！");
+                }
                 }
             }
             catch (Exception e)
@@ -404,11 +404,11 @@ namespace KindredLogistics.Services
             var territoryIndex = Core.TerritoryService.GetTerritoryId(charEntity);
             if (territoryIndex == -1)
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Unable to search for items outside territories!");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "無法在領地外進行物品搜尋！");
                 return;
             }
 
-            Utilities.SendSystemMessageToClient(Core.EntityManager, user, "Find Item Report\n--------------------------------");
+            Utilities.SendSystemMessageToClient(Core.EntityManager, user, "物品搜尋報告\n--------------------------------");
             var serverGameManager = Core.ServerGameManager;
             var foundStash = false;
             var totalFound = 0;
@@ -439,11 +439,11 @@ namespace KindredLogistics.Services
 
             if (!foundStash)
             {
-                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "No available stashes found in your current territory!");
+                Utilities.SendSystemMessageToClient(Core.EntityManager, user, "當前領地內找不到可用儲藏箱！");
                 return;
             }
 
-            Utilities.SendSystemMessageToClient(Core.EntityManager, user, $"Total <color=green>{itemName}</color> found: <color=white>{totalFound}</color>");
+            Utilities.SendSystemMessageToClient(Core.EntityManager, user, $"共找到 <color=green>{itemName}</color>：<color=white>{totalFound}</color>");
         }
 
         void ClearSpotlights(Entity userEntity)

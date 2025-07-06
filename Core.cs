@@ -79,9 +79,10 @@ internal static class Core
 
         FoundItemConverter.LoadItemNames();
 
+
         FixAdvanceFurnaces();
 
-        Core.Log.LogInfo("KindredLogistics initialized");
+        Core.Log.LogInfo("KindredLogistics  已初始化");
 
         hasInitialized = true;
     }

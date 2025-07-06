@@ -21,7 +21,7 @@ public class Plugin : BasePlugin
         plugin = this;
 
         // Plugin startup logic
-        Log.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} version {MyPluginInfo.PLUGIN_VERSION} is loaded!");
+        Log.LogInfo($"插件 {MyPluginInfo.PLUGIN_GUID} 版本 {MyPluginInfo.PLUGIN_VERSION} 已載入！");
 
         // Harmony patching
         _harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
